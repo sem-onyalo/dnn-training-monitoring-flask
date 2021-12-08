@@ -1,10 +1,10 @@
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, render_template
 
 public = Blueprint("routes", __name__)
 
 @public.route("/")
 def default():
-    return "...app is running..."
+    return render_template("index.html")
 
 def init_app():
     app = Flask(__name__)
