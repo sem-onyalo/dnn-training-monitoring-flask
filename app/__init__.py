@@ -1,12 +1,20 @@
 from flask import Flask, Blueprint, render_template
+from app.datastore import TestDatastore
+from app.service import TrainingDataService
 
 public = Blueprint("routes", __name__)
+trainingDataService = None
 
 @public.route("/")
 def default():
-    return render_template("index.html")
+    metrics = trainingDataService.getMetrics()
+    return render_template("index.html", metrics=metrics)
 
 def init_app():
+    global trainingDataService
+    datastore = TestDatastore() # TODO: set value based on run param
+    trainingDataService = TrainingDataService(datastore)
+
     app = Flask(__name__)
     app.register_blueprint(public)
     return app
