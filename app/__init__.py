@@ -8,7 +8,18 @@ trainingDataService = None
 @public.route("/")
 def default():
     metrics = trainingDataService.getMetrics()
-    return render_template("index.html", metrics=metrics)
+    plots = trainingDataService.getPlots()
+    summary = trainingDataService.getSummary()
+    hyperparams = trainingDataService.getHyperparameters()
+    runs = trainingDataService.getRuns()
+    
+    return render_template(
+        "index.html", 
+        metrics=metrics, 
+        plots=plots, 
+        summary=summary, 
+        hyperparams=hyperparams,
+        runs=runs)
 
 def init_app():
     global trainingDataService
