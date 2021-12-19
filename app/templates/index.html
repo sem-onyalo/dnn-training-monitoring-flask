@@ -60,7 +60,7 @@
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="trainingRunButton">
 							{% for run in runs %}
-							<li><a class="dropdown-item" href="#">{{ run }}</a></li>
+							<li><a class="dropdown-item {{ 'active' if currentRun == run }}" href="#">{{ run }}</a></li>
 							{% endfor %}
 						</ul>
 					</div>

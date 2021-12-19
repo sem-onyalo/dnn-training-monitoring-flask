@@ -16,7 +16,7 @@ class TestDatastore(Datastore):
 
         return trainMetrics
 
-    def getPlots(self):
+    def getPlots(self, run=None):
         plots = TrainPlots()
         plots.loss = TEST_PLOT_LOSS
         plots.image = TEST_PLOT_IMAGE
@@ -26,7 +26,7 @@ class TestDatastore(Datastore):
     def getSummary(self):
         return json.loads(TEST_SUMMARY)
 
-    def getHyperparameters(self):
+    def getHyperparameters(self, run=None):
         return json.loads(TEST_HYPERPARAMETERS)
 
     def getRuns(self):
