@@ -7,14 +7,17 @@ class TrainingDataService:
     def getRuns(self):
         return self.datastore.getRuns()
 
-    def getMetrics(self):
-        return self.datastore.getMetrics()
+    def getEvals(self, run):
+        return self.datastore.getEvals(run)
 
-    def getPlots(self, run=None):
-        return self.datastore.getPlots(run)
-
-    def getSummary(self):
-        return self.datastore.getSummary()
-
-    def getHyperparameters(self, run=None):
+    def getHyperparameters(self, run):
         return self.datastore.getHyperparameters(run)
+
+    def getSummary(self, run, eval):
+        return self.datastore.getSummary(run, eval)
+
+    def getMetrics(self, run, eval):
+        return self.datastore.getMetrics(run, eval)
+
+    def getPlots(self, run, eval):
+        return self.datastore.getPlots(run, eval)

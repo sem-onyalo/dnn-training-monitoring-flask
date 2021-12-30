@@ -4,37 +4,40 @@ from app.datastore import Datastore
 from app.model import TrainMetrics, Metric, TrainPlots
 
 class TestDatastore(Datastore):
-    def getMetrics(self):
-        header = ["Epoch", "Mini-Batch", "Discriminator Loss: Real", "Discriminator Loss: Fake", "GAN Loss"]
-
-        metrics = list()
-        metrics.append(Metric(1, "0/234", 0.304, 2.544, 0.487))
-        metrics.append(Metric(1, "1/234", 0.239, 1.219, 0.880))
-        metrics.append(Metric(1, "1/234", 0.239, 1.219, 0.880))
-
-        trainMetrics = TrainMetrics(header, metrics)
-
-        return trainMetrics
-
-    def getPlots(self, run=None):
-        plots = TrainPlots()
-        plots.loss = TEST_PLOT_LOSS
-        plots.image = TEST_PLOT_IMAGE
-        plots.target = TEST_PLOT_TARGET
-        return plots
-
-    def getSummary(self):
-        return json.loads(TEST_SUMMARY)
-
-    def getHyperparameters(self, run=None):
-        return json.loads(TEST_HYPERPARAMETERS)
-
     def getRuns(self):
         return [
             "20211210T132017",
             "20211209T132017",
             "20211208T132017"
         ]
+
+    def getEvals(self, run):
+        return [40, 30, 20, 10]
+
+    def getHyperparameters(self, run):
+        return json.loads(TEST_HYPERPARAMETERS)
+
+    def getSummary(self, run, eval):
+        return json.loads(TEST_SUMMARY)
+
+    def getMetrics(self, run, eval):
+        header = ["Epoch", "Epochs", "Mini-Batch", "Mini-Batches", "Discriminator Loss: Real", "Discriminator Loss: Fake", "GAN Loss"]
+
+        metrics = list()
+        metrics.append(Metric(1, 100, 1, 234, 0.304, 2.544, 0.487))
+        metrics.append(Metric(1, 100, 2, 234, 0.239, 1.219, 0.880))
+        metrics.append(Metric(1, 100, 3, 234, 0.239, 1.219, 0.880))
+
+        trainMetrics = TrainMetrics(header, metrics)
+
+        return trainMetrics
+
+    def getPlots(self, run, eval):
+        plots = TrainPlots()
+        plots.loss = TEST_PLOT_LOSS
+        plots.image = TEST_PLOT_IMAGE
+        plots.target = TEST_PLOT_TARGET
+        return plots
 
 TEST_SUMMARY = '''
 {

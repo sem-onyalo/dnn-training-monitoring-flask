@@ -3,18 +3,25 @@ from app.datastore import TestDatastore, AwsS3Datastore
 from app.service import TrainingDataService
 
 public = Blueprint("routes", __name__)
-trainingDataService = None
+trainingDataService:TrainingDataService = None
 
-@public.route("/", defaults={"run": None})
-def default(run):
+@public.route("/", defaults={"run": None, "eval": None})
+@public.route("/<run>", defaults={"eval": None})
+@public.route("/<run>/<eval>")
+def default(run, eval):
     runs = trainingDataService.getRuns()
     if run == None and len(runs) > 0:
         run = runs[0]
 
+    eval = None
+    evals = trainingDataService.getEvals(run)
+    if eval == None and len(evals) > 0:
+        eval = evals[0]
+
     hyperparams = trainingDataService.getHyperparameters(run)
-    metrics = trainingDataService.getMetrics()
-    plots = trainingDataService.getPlots(run)
-    summary = trainingDataService.getSummary()
+    plots = trainingDataService.getPlots(run, eval)
+    metrics = trainingDataService.getMetrics(run, eval)
+    summary = trainingDataService.getSummary(run, eval)
 
     return render_template(
         "index.html", 
@@ -23,7 +30,9 @@ def default(run):
         summary=summary, 
         hyperparams=hyperparams,
         runs=runs,
-        currentRun=run)
+        currentRun=run,
+        evals=evals,
+        currentEval=eval)
 
 def init_app(config):
     global trainingDataService

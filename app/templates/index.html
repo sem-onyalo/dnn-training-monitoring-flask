@@ -55,10 +55,10 @@
 					<!-- <div class="btn-toolbar mb-2 mb-md-0"> -->
 					<div class="dropdown">
 						<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-							id="trainingRunButton" data-bs-toggle="dropdown" aria-expanded="false">
-							Training Run
+							id="trainingRunsButton" data-bs-toggle="dropdown" aria-expanded="false">
+							Training Runs
 						</button>
-						<ul class="dropdown-menu" aria-labelledby="trainingRunButton">
+						<ul class="dropdown-menu" aria-labelledby="trainingRunsButton">
 							{% for run in runs %}
 							<li><a class="dropdown-item {{ 'active' if currentRun == run }}" href="#">{{ run }}</a></li>
 							{% endfor %}
@@ -80,6 +80,14 @@
 				</div>
 
 				<h2>Metrics</h2>
+				<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="epochRunsButton"
+					data-bs-toggle="dropdown" aria-expanded="false">Epoch Runs</button>
+				<ul class="dropdown-menu" aria-labelledby="epochRunsButton">
+					{% for eval in evals %}
+					<li><a class="dropdown-item {{ 'active' if currentEval == eval }}" href="#">{{ eval }}</a></li>
+					{% endfor %}
+				</ul>
+
 				{% for key, value in summary.items() %}
 				<span><strong>{{ key }}:</strong> {{ value }}</span>
 				{% endfor %}
@@ -92,13 +100,17 @@
 								<th scope="col">{{ metrics.header[2] }}</th>
 								<th scope="col">{{ metrics.header[3] }}</th>
 								<th scope="col">{{ metrics.header[4] }}</th>
+								<th scope="col">{{ metrics.header[5] }}</th>
+								<th scope="col">{{ metrics.header[6] }}</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for item in metrics.metrics %}
 							<tr>
 								<td>{{ item.epoch }}</td>
+								<td>{{ item.epochs }}</td>
 								<td>{{ item.miniBatch }}</td>
+								<td>{{ item.miniBatches }}</td>
 								<td>{{ item.dLossReal }}</td>
 								<td>{{ item.dLossFake }}</td>
 								<td>{{ item.gLoss }}</td>
