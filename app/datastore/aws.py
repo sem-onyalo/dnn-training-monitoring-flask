@@ -9,19 +9,10 @@ from app.model import TrainMetrics, TrainPlots
 from botocore.exceptions import ClientError
 from common.config import Config
 
-EPOCH_PREFIX = "epoch"
-PLOT_VALUE_PREFIX = "data:image/png;base64,"
-TARGET_PLOT_FILE_NAME = "target.png"
-GENERATED_PLOT_FILE_NAME = "generated.png"
-LOSS_ACCURACY_FILE_NAME = "loss_accuracy.png"
-METRICS_FILE_NAME = "metrics.csv"
-SUMMARY_FILE_NAME = "summary.json"
-HYPERPARAMETERS_FILE_NAME = "hyperparameters.json"
-
 class DatastoreAwsS3:
     def __init__(self, config:Config) -> None:
-        self.bucket_name = config.storage_root
-        self.bucket = boto3.resource("s3").Bucket(self.bucket_name)
+        self.config = config
+        self.bucket = boto3.resource("s3").Bucket(config.storage_root)
 
     def getRuns(self):
         objectSummary = self.bucket.objects.all()
@@ -30,7 +21,7 @@ class DatastoreAwsS3:
         return runs
 
     def getEvals(self, run):
-        epochPrefixKey = f"{run}/{EPOCH_PREFIX}/"
+        epochPrefixKey = f"{run}/{self.config.epoch_directory}/"
         objectSummary = self.bucket.objects.filter(Prefix=epochPrefixKey)
         evals = [o.key.replace(epochPrefixKey, "").split("/")[0] for o in objectSummary]
         evals = [int(e) for e in evals if e.isnumeric()]
@@ -40,7 +31,7 @@ class DatastoreAwsS3:
     def getHyperparameters(self, run):
         hyperparams = "{}"
         if run != None:
-            blob_key = f"{run}/{HYPERPARAMETERS_FILE_NAME}"
+            blob_key = f"{run}/{self.config.hyperparameters_file}"
             hyperparams = self._get_blob_string(blob_key)
 
         return json.loads(hyperparams)
@@ -48,7 +39,7 @@ class DatastoreAwsS3:
     def getSummary(self, run, eval):
         summary = "{}"
         if run != None and eval != None:
-            blob_key = f"{run}/{EPOCH_PREFIX}/{eval}/{SUMMARY_FILE_NAME}"
+            blob_key = f"{run}/{self.config.epoch_directory}/{eval}/{self.config.summary_file}"
             summary = self._get_blob_string(blob_key)
 
         return json.loads(summary)
@@ -57,7 +48,7 @@ class DatastoreAwsS3:
         header = []
         items = list()
         if run != None and eval != None:
-            blob_key = f"{run}/{EPOCH_PREFIX}/{eval}/{METRICS_FILE_NAME}"
+            blob_key = f"{run}/{self.config.epoch_directory}/{eval}/{self.config.metrics_file}"
             blob_str = self._get_blob_string(blob_key)
 
             with io.StringIO(blob_str) as fd:
@@ -74,24 +65,24 @@ class DatastoreAwsS3:
     def getPlots(self, run, eval):
         plots = TrainPlots()
         if run != None:
-            blob_key = f"{run}/{TARGET_PLOT_FILE_NAME}"
+            blob_key = f"{run}/{self.config.target_samples_file}"
             blob_bytes = self._get_blob_bytes(blob_key)
             if blob_bytes != None:
                 base64Value = base64.b64encode(blob_bytes).decode()
-                plots.target = f"{PLOT_VALUE_PREFIX}{base64Value}"
+                plots.target = f"{self.config.plot_value_prefix}{base64Value}"
 
             if eval != None:
-                blob_key = f"{run}/{EPOCH_PREFIX}/{eval}/{LOSS_ACCURACY_FILE_NAME}"
+                blob_key = f"{run}/{self.config.epoch_directory}/{eval}/{self.config.loss_accuracy_file}"
                 blob_bytes = self._get_blob_bytes(blob_key)
                 if blob_bytes != None:
                     base64Value = base64.b64encode(blob_bytes).decode()
-                    plots.loss = f"{PLOT_VALUE_PREFIX}{base64Value}"
+                    plots.loss = f"{self.config.plot_value_prefix}{base64Value}"
 
-                blob_key = f"{run}/{EPOCH_PREFIX}/{eval}/{GENERATED_PLOT_FILE_NAME}"
+                blob_key = f"{run}/{self.config.epoch_directory}/{eval}/{self.config.generated_samples_file}"
                 blob_bytes = self._get_blob_bytes(blob_key)
                 if blob_bytes != None:
                     base64Value = base64.b64encode(blob_bytes).decode()
-                    plots.image = f"{PLOT_VALUE_PREFIX}{base64Value}"
+                    plots.image = f"{self.config.plot_value_prefix}{base64Value}"
 
         return plots
 
