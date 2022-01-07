@@ -1,8 +1,10 @@
-# Deep Neural Network Training Monitoring
+# GAN Training Monitor Web Application
 
-A Flask web application to monitor and analyze deep neural network training runs.
+A Flask web application to monitor GAN training runs.
 
 ## Install
+
+### Windows
 
 ```
 python -m venv env
@@ -16,4 +18,10 @@ pip install -r requirements.txt
 
 ```
 python app.py
+```
+
+### Run with AWS S3 Backend
+
+```
+python app.py --storage aws_s3
 ```

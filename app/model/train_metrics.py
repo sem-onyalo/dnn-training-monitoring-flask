@@ -1,10 +1,7 @@
-from app.model import Metric
-from typing import List
-
 class TrainMetrics:
     header:list
-    metrics:List[Metric]
+    items:list
 
-    def __init__(self, header, metrics=None) -> None:
+    def __init__(self, header, items=None) -> None:
         self.header = header
-        self.metrics = metrics if metrics != None else list()
+        self.items = items if items != None else list()

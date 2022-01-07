@@ -1,9 +1,8 @@
 import json
 
-from app.datastore import Datastore
-from app.model import TrainMetrics, Metric, TrainPlots
+from app.model import TrainMetrics, TrainPlots
 
-class TestDatastore(Datastore):
+class DatastoreTest:
     def getRuns(self):
         return [
             "20211210T132017",
@@ -23,12 +22,11 @@ class TestDatastore(Datastore):
     def getMetrics(self, run, eval):
         header = ["Epoch", "Epochs", "Mini-Batch", "Mini-Batches", "Discriminator Loss: Real", "Discriminator Loss: Fake", "GAN Loss"]
 
-        metrics = list()
-        metrics.append(Metric(1, 100, 1, 234, 0.304, 2.544, 0.487))
-        metrics.append(Metric(1, 100, 2, 234, 0.239, 1.219, 0.880))
-        metrics.append(Metric(1, 100, 3, 234, 0.239, 1.219, 0.880))
-
-        trainMetrics = TrainMetrics(header, metrics)
+        items = list()
+        items.append([1, 100, 1, 234, 0.304, 2.544, 0.487])
+        items.append([1, 100, 2, 234, 0.239, 1.219, 0.880])
+        items.append([1, 100, 3, 234, 0.239, 1.219, 0.880])
+        trainMetrics = TrainMetrics(header, items)
 
         return trainMetrics
 

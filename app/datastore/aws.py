@@ -5,8 +5,7 @@ import io
 import json
 import logging
 
-from app.datastore import Datastore
-from app.model import TrainMetrics, Metric, TrainPlots
+from app.model import TrainMetrics, TrainPlots
 from botocore.exceptions import ClientError
 from common.config import Config
 
@@ -19,7 +18,7 @@ METRICS_FILE_NAME = "metrics.csv"
 SUMMARY_FILE_NAME = "summary.json"
 HYPERPARAMETERS_FILE_NAME = "hyperparameters.json"
 
-class AwsS3Datastore(Datastore):
+class DatastoreAwsS3:
     def __init__(self, config:Config) -> None:
         self.bucket_name = config.storage_root
         self.bucket = boto3.resource("s3").Bucket(self.bucket_name)
@@ -56,7 +55,7 @@ class AwsS3Datastore(Datastore):
 
     def getMetrics(self, run, eval):
         header = []
-        metrics = list()
+        items = list()
         if run != None and eval != None:
             blob_key = f"{run}/{EPOCH_PREFIX}/{eval}/{METRICS_FILE_NAME}"
             blob_str = self._get_blob_string(blob_key)
@@ -65,21 +64,11 @@ class AwsS3Datastore(Datastore):
                 reader = csv.reader(fd)
                 for i, row in enumerate(reader):
                     if i > 0:
-                        epoch = row[0]
-                        epochs = row[1]
-                        mini_batch = row[2]
-                        mini_batches = row[3]
-                        d_loss_real = row[4]
-                        d_loss_fake = row[5]
-                        g_loss = row[6]
-                        metric = Metric(epoch, epochs, mini_batch, mini_batches, d_loss_real, d_loss_fake, g_loss)
-                        metrics.insert(0, metric)
+                        items.append(row)
                     else:
                         header = row
 
-                    i += 1
-
-        trainMetrics = TrainMetrics(header, metrics)
+        trainMetrics = TrainMetrics(header, items)
         return trainMetrics
 
     def getPlots(self, run, eval):

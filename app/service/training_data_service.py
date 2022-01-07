@@ -1,7 +1,5 @@
-from app.datastore import Datastore
-
 class TrainingDataService:
-    def __init__(self, datastore:Datastore) -> None:
+    def __init__(self, datastore) -> None:
         self.datastore = datastore
 
     def getRuns(self):
