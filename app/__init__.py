@@ -1,8 +1,11 @@
+from common.config import Config
 from flask import Flask, Blueprint, render_template
 from app.datastore import get_datastore
 from app.service import TrainingDataService
 
 public = Blueprint("routes", __name__)
+
+auto_refresh_seconds:int = None
 trainingDataService:TrainingDataService = None
 
 @public.route("/", defaults={"run": None, "eval": None})
@@ -23,17 +26,21 @@ def default(run, eval):
     summary = trainingDataService.getSummary(run, eval)
 
     return render_template(
-        "index.html", 
-        metrics=metrics, 
-        plots=plots, 
-        summary=summary, 
+        "index.html",
+        auto_refresh_seconds=auto_refresh_seconds,
+        metrics=metrics,
+        plots=plots,
+        summary=summary,
         hyperparams=hyperparams,
         runs=runs,
         currentRun=run,
         evals=evals,
         currentEval=eval)
 
-def init_app(config):
+def init_app(config:Config):
+    global auto_refresh_seconds
+    auto_refresh_seconds = config.auto_refresh_seconds
+
     global trainingDataService
     datastore = get_datastore(config)
     trainingDataService = TrainingDataService(datastore)

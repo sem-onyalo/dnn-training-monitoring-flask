@@ -10,6 +10,7 @@ def get_runtime_args():
     parser.add_argument("-p", "--host_port", type=str, default="8080", help="The host port")
     parser.add_argument("-s", "--storage", type=str, default="test", help="The storage type")
     parser.add_argument("-r", "--storage_root", type=str, default="dnn-training", help="The storage root name")
+    parser.add_argument("-a", "--auto_refresh_seconds", type=int, default=60, help="Number of seconds to auto-refresh the webpage")
     return parser.parse_args()
 
 if __name__ == "__main__":

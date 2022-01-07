@@ -5,6 +5,7 @@ HOST_KEY = "DNN_TRAINING_HOST"
 PORT_KEY = "DNN_TRAINING_PORT"
 STORAGE_KEY = "DNN_TRAINING_STORAGE"
 STORAGE_ROOT_KEY = "DNN_TRAINING_STORAGE_ROOT"
+AUTO_REFRESH_SECONDS = "AUTO_REFRESH_SECONDS"
 
 EPOCH_DIRECTORY = "EPOCH_DIRECTORY"
 GENERATED_SAMPLES_FILE = "GENERATED_SAMPLES_FILE"
@@ -30,6 +31,7 @@ class Config:
         self.port = os.environ.get(PORT_KEY, runtime_args.host_port)
         self.storage = os.environ.get(STORAGE_KEY, runtime_args.storage)
         self.storage_root = os.environ.get(STORAGE_ROOT_KEY, runtime_args.storage_root)
+        self.auto_refresh_seconds = os.environ.get(AUTO_REFRESH_SECONDS, runtime_args.auto_refresh_seconds)
 
         self.epoch_directory = os.environ.get(EPOCH_DIRECTORY, "epoch")
         self.generated_samples_file = os.environ.get(GENERATED_SAMPLES_FILE, "generated.png")
