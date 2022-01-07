@@ -9,12 +9,9 @@ trainingDataService:TrainingDataService = None
 @public.route("/<run>", defaults={"eval": None})
 @public.route("/<run>/<eval>")
 def default(run, eval):
-    eval_href_prefix = ""
-
     runs = trainingDataService.getRuns()
     if run == None and len(runs) > 0:
         run = runs[0]
-        eval_href_prefix = f"{run}/"
 
     evals = trainingDataService.getEvals(run)
     if eval == None and len(evals) > 0:
@@ -34,8 +31,7 @@ def default(run, eval):
         runs=runs,
         currentRun=run,
         evals=evals,
-        currentEval=eval,
-        eval_href_prefix=eval_href_prefix)
+        currentEval=eval)
 
 def init_app(config):
     global trainingDataService

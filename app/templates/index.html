@@ -66,8 +66,7 @@
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="trainingRunsButton">
 							{% for run in runs %}
-							<li><a class="dropdown-item {{ 'active' if currentRun == run }}" href="{{ run }}">{{ run
-									}}</a></li>
+							<li><a class="dropdown-item {{ 'active' if currentRun == run }}" href="/{{ run }}">{{ run }}</a></li>
 							{% endfor %}
 						</ul>
 					</div>
@@ -94,7 +93,7 @@
 				<ul class="dropdown-menu" aria-labelledby="epochRunsButton">
 					{% for eval in evals %}
 					<li><a class="dropdown-item {{ 'active' if currentEval == eval }}"
-							href="{{ eval_href_prefix }}{{ eval }}">{{ eval }}</a></li>
+							href="/{{ currentRun }}/{{ eval }}">{{ eval }}</a></li>
 					{% endfor %}
 				</ul>
 
