@@ -10,9 +10,12 @@
 
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
-	<link rel="apple-touch-icon" href="{{ url_for('static', filename='favicons/apple-touch-icon.png') }}" sizes="180x180">
-	<link rel="icon" href="{{ url_for('static', filename='favicons/favicon-32x32.png') }}" sizes="32x32" type="image/png">
-	<link rel="icon" href="{{ url_for('static', filename='favicons/favicon-16x16.png') }}" sizes="16x16" type="image/png">
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='favicons/apple-touch-icon.png') }}"
+		sizes="180x180">
+	<link rel="icon" href="{{ url_for('static', filename='favicons/favicon-32x32.png') }}" sizes="32x32"
+		type="image/png">
+	<link rel="icon" href="{{ url_for('static', filename='favicons/favicon-16x16.png') }}" sizes="16x16"
+		type="image/png">
 	<link rel="manifest" href="{{ url_for('static', filename='favicons/site.webmanifest') }}">
 	<link rel="icon" href="{{ url_for('static', filename='favicons/favicon.ico') }}">
 
@@ -58,9 +61,8 @@
 				<div
 					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 					<h1 class="h2">
-						<!--Dashboard-->
+						Dashboard
 					</h1>
-					<!-- <div class="btn-toolbar mb-2 mb-md-0"> -->
 					<div class="dropdown">
 						<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
 							id="trainingRunsButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -68,7 +70,8 @@
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="trainingRunsButton">
 							{% for run in runs %}
-							<li><a class="dropdown-item {{ 'active' if currentRun == run }}" href="/{{ run }}">{{ run }}</a></li>
+							<li><a class="dropdown-item {{ 'active' if currentRun == run }}" href="/{{ run }}">{{ run
+									}}</a></li>
 							{% endfor %}
 						</ul>
 					</div>
@@ -78,7 +81,25 @@
 				<span><strong>{{ key }}:</strong> {{ value }}</span>
 				{% endfor %}
 
-				<h2>Plots</h2>
+				<div
+					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+					<h1 class="h3">
+						Epoch {{ currentEval }}
+					</h1>
+					<div class="dropdown">
+						<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+							id="epochRunsButton" data-bs-toggle="dropdown" aria-expanded="false">Evaluation
+							Epochs</button>
+						<ul class="dropdown-menu" aria-labelledby="epochRunsButton">
+							{% for eval in evals %}
+							<li><a class="dropdown-item {{ 'active' if currentEval == eval }}"
+									href="/{{ currentRun }}/{{ eval }}">{{ eval }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+
+				<h3>Plots</h3>
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col"><span>Loss/Accuracy</span><img src="{{ plots.loss }}" /></div>
@@ -87,17 +108,7 @@
 					</div>
 				</div>
 
-				<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="epochRunsButton"
-					data-bs-toggle="dropdown" aria-expanded="false">Evaluation epochs</button>
-
-				<h2>Metrics</h2>
-
-				<ul class="dropdown-menu" aria-labelledby="epochRunsButton">
-					{% for eval in evals %}
-					<li><a class="dropdown-item {{ 'active' if currentEval == eval }}"
-							href="/{{ currentRun }}/{{ eval }}">{{ eval }}</a></li>
-					{% endfor %}
-				</ul>
+				<h3>Metrics</h3>
 
 				{% for key, value in summary.items() %}
 				<span><strong>{{ key }}:</strong> {{ value }}</span>
