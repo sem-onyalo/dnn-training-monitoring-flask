@@ -23,14 +23,14 @@ class Config:
     host:str
     port:str
     storage:str
-    storage_root:str
+    storage_name:str
 
     def __init__(self, runtime_args) -> None:
         self.debug = os.environ.get(DEBUG_KEY, runtime_args.debug)
         self.host = os.environ.get(HOST_KEY, runtime_args.host_ip)
         self.port = os.environ.get(PORT_KEY, runtime_args.host_port)
         self.storage = os.environ.get(STORAGE_KEY, runtime_args.storage)
-        self.storage_root = os.environ.get(STORAGE_ROOT_KEY, runtime_args.storage_root)
+        self.storage_name = os.environ.get(STORAGE_ROOT_KEY, runtime_args.storage_name)
         self.auto_refresh_seconds = os.environ.get(AUTO_REFRESH_SECONDS, runtime_args.auto_refresh_seconds)
 
         self.epoch_directory = os.environ.get(EPOCH_DIRECTORY, "epoch")

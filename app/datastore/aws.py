@@ -12,7 +12,7 @@ from common.config import Config
 class DatastoreAwsS3:
     def __init__(self, config:Config) -> None:
         self.config = config
-        self.bucket = boto3.resource("s3").Bucket(config.storage_root)
+        self.bucket = boto3.resource("s3").Bucket(config.storage_name)
 
     def getRuns(self):
         objectSummary = self.bucket.objects.all()
