@@ -15,6 +15,7 @@ METRICS_FILE = "METRICS_FILE"
 MODEL_FILE = "MODEL_FILE"
 SUMMARY_FILE = "SUMMARY_FILE"
 TARGET_SAMPLES_FILE = "TARGET_SAMPLES_FILE"
+CLOUD_STORAGE_ACCOUNT = "CLOUD_STORAGE_ACCOUNT"
 
 PLOT_VALUE_PREFIX = "PLOT_VALUE_PREFIX"
 
@@ -41,5 +42,6 @@ class Config:
         self.model_file = os.environ.get(MODEL_FILE, "model.h5")
         self.summary_file = os.environ.get(SUMMARY_FILE, "summary.json")
         self.target_samples_file = os.environ.get(TARGET_SAMPLES_FILE, "target.png")
+        self.cloud_storage_account = os.environ.get(CLOUD_STORAGE_ACCOUNT, "5d1796b484c2431eb911")
 
         self.plot_value_prefix = os.environ.get(PLOT_VALUE_PREFIX, "data:image/png;base64,")
